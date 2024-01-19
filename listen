@@ -1,0 +1,16 @@
+#!/bin/sh
+
+command=$1
+eventFile=$2
+
+if [[ -z $eventFile ]]; then
+  echo "No event file specified"
+elif [[ ! -f $eventFile ]];then 
+  touch $eventFile
+fi
+
+inotifywait -m -e modify $eventFile | while IFS= read -r _; do 
+eval $command
+done
+
+
